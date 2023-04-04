@@ -1,0 +1,15 @@
+/.idea/
+/vendor/
+/auth.json.sample
+/CHANGELOG.md
+/composer.json
+/composer.lock
+/COPYING.txt
+/deploy.sh
+/grunt-config.json.sample
+/Gruntfile.js.sample
+/LICENSE.txt
+/LICENSE_AFL.txt
+/nginx.conf.sample
+/package.json.sample
+/SECURITY.md

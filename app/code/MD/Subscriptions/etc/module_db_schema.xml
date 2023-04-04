@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <!--Subscription Plans Table-->
+    <table name="md_subscription_plans" engine="innodb" comment="Subscription Plans">
+        <column xsi:type="integer" name="id" nullable="false" identity="true" comment="Plan ID"/>
+        <column xsi:type="varchar" name="name" nullable="false" length="255" comment="Plan Name"/>
+        <column xsi:type="text" name="description" nullable="true" comment="Plan Description"/>
+        <column xsi:type="integer" name="minimum_deliveries" nullable="false" comment="Minimum Deliveries"/>
+        <column xsi:type="integer" name="maximum_deliveries" nullable="false" comment="Maximum Deliveries"/>
+        <column xsi:type="integer" name="delivery_frequency" nullable="false" comment="Delivery Frequency (in months)"/>
+        <constraint xsi:type="primary" name="PRIMARY">
+            <column name="id"/>
+        </constraint>
+    </table>
+
+    <!--Subscriptions Table-->
+    <table name="md_subscriptions" engine="innodb" comment="Subscriptions">
+        <column xsi:type="integer" name="id" nullable="false" identity="true" comment="Subscription ID"/>
+        <column xsi:type="integer" name="plan_id" nullable="false" comment="Plan ID"/>
+        <column xsi:type="integer" name="main_order_id" nullable="false" comment="Main Order ID"/>
+        <column xsi:type="integer" name="subscriber_id" nullable="false" comment="Subscriber ID"/>
+        <column xsi:type="varchar" name="subscriber_name" nullable="false" length="255" comment="Subscriber Name"/>
+        <column xsi:type="varchar" name="subscriber_email" nullable="false" length="255" comment="Subscriber Email"/>
+        <column xsi:type="date" name="start_date" nullable="false" comment="Subscription Start Date"/>
+        <column xsi:type="date" name="end_date" nullable="false" comment="Subscription End Date"/>
+        <column xsi:type="integer" name="deliveries" nullable="false" comment="Number of Deliveries"/>
+        <column xsi:type="integer" name="delivery_frequency" nullable="false" comment="Delivery Frequency (in months)"/>
+        <column xsi:type="integer" name="is_canceled_by_customer" nullable="true" comment="Is Subscription canceled by customer"/>
+        <column xsi:type="varchar" name="status" nullable="false" length="20" comment="Subscription Status"/>
+        <constraint xsi:type="primary" name="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="SUBSCRIPTION_PLAN_ID"
+                    table="md_subscriptions" column="plan_id" referenceTable="md_subscription_plans" referenceColumn="id"
+                    onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="SUBSCRIPTION_ITEMS"
+                    table="md_subscriptions" column="id" referenceTable="md_subscription_items" referenceColumn="subscription_id"
+                    onDelete="CASCADE"/>
+    </table>
+
+    <!--Subscription Orders Table-->
+    <table name="md_subscription_orders" engine="innodb" comment="Subscription Orders">
+        <column xsi:type="integer" name="id" nullable="false" identity="true" comment="ID"/>
+        <column xsi:type="integer" name="subscription_id" nullable="false" comment="Subscription ID"/>
+        <column xsi:type="integer" name="order_id" nullable="false" comment="Order ID"/>
+        <column xsi:type="date" name="delivery_date" nullable="false" comment="Delivery Date"/>
+        <column xsi:type="varchar" name="status" nullable="false" length="20" comment="Order Status"/>
+        <constraint xsi:type="primary" name="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="SUBSCRIPTION_ORDER_SUBSCRIPTION_ID"
+                    table="md_subscription_orders" column="subscription_id" referenceTable="md_subscriptions" referenceColumn="id"
+                    onDelete="CASCADE"/>
+    </table>
+
+    <!--Subscription Payments Table-->
+    <table name="md_subscription_payments" engine="innodb" comment="Subscription Payments">
+        <column xsi:type="integer" name="id" nullable="false" identity="true" comment="Payment ID"/>
+        <column xsi:type="integer" name="subscription_id" nullable="false" comment="Subscription ID"/>
+        <column xsi:type="date" name="payment_date" nullable="false" comment="Payment Date"/>
+        <column xsi:type="decimal" name="amount" precision="12" scale="4" nullable="false" comment="Payment Amount"/>
+        <column xsi:type="varchar" name="status" nullable="false" length="20" comment="Payment Status"/>
+        <constraint xsi:type="primary" name="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="SUBSCRIPTION_PAYMENT_SUBSCRIPTION_ID"
+                    table="md_subscription_payments" column="subscription_id" referenceTable="md_subscriptions" referenceColumn="id"
+                    onDelete="CASCADE"/>
+    </table>
+
+    <!--Subscription Items Table-->
+    <table name="md_subscription_items" engine="innodb" comment="Subscription Items">
+        <column xsi:type="integer" name="id" nullable="false" identity="true" comment="ID"/>
+        <column xsi:type="integer" name="subscription_id" nullable="false" comment="Subscription ID"/>
+        <column xsi:type="integer" name="item_id" nullable="false" comment="Item ID"/>
+        <column xsi:type="decimal" name="price" precision="12" scale="4" nullable="false" comment="Price"/>
+        <constraint xsi:type="primary" name="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="SUBSCRIPTION_ITEMS_SUBSCRIPTION_ID"
+                    table="md_subscription_items" column="subscription_id" referenceTable="md_subscriptions" referenceColumn="id"
+                    onDelete="CASCADE"/>
+    </table>
+</schema>
