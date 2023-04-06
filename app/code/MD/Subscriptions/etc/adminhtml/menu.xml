@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+        <add id="MD_Subscriptions::subscriptions" title="Subscription Management" module="MD_Subscriptions" sortOrder="40" resource="MD_Subscriptions::subscription"/>
+        <add id="MD_Subscriptions::subscriptions_grid" title="Subscriptions" module="MD_Subscriptions" parent="MD_Subscriptions::subscriptions" action="subscriptions/subscription" sortOrder="40" resource="MD_Subscriptions::subscription"/>
+    </menu>
+</config>

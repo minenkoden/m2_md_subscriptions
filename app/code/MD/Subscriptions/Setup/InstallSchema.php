@@ -143,12 +143,6 @@ class InstallSchema implements InstallSchemaInterface
             $installer->getTable('md_subscription_plans'),
             'id',
             Table::ACTION_CASCADE
-        )->addForeignKey(
-            $installer->getFkName('md_subscriptions', 'id', 'md_subscription_items', 'subscription_id'),
-            'id',
-            $installer->getTable('md_subscription_items'),
-            'id',
-            Table::ACTION_CASCADE
         )->setComment('Subscriptions');
         $installer->getConnection()->createTable($table);
 
